@@ -17,7 +17,7 @@ namespace PluginLibrary.Plugins
 
 		public object Clone()
 		{
-			return new SuperPlugin() {helpPlugin = this.helpPlugin};
+			return new SuperPlugin() {helpPlugin = (Plugin<int>) Activator.CreateInstance(this.helpPlugin.GetType())};
 		}
 	}
 }

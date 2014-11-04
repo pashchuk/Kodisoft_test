@@ -15,7 +15,7 @@ namespace PluginLibrary.Plugins
 
 		public object Clone()
 		{
-			Activator.CreateInstance(this.GetType());
+			return Activator.CreateInstance(this.GetType());
 		}
 	}
 }

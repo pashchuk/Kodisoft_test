@@ -25,7 +25,7 @@ namespace PluginLibrary.Plugins
 
 		public object Clone()
 		{
-			return new DateTimePlugin(this.timeZone);
+			return this.MemberwiseClone();
 		}
 	}
 }

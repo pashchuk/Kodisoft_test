@@ -21,7 +21,7 @@ namespace PluginLibrary.Plugins
 
 		public object Clone()
 		{
-			return new IntPlugin(this.multiplier);
+			return this.MemberwiseClone();
 		}
 	}
 }

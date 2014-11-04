@@ -26,7 +26,7 @@ namespace PluginLibrary.Plugins
 
 		public object Clone()
 		{
-			return new CollectionPlugin() {Plugins = this.Plugins};
+			return new CollectionPlugin() {Plugins = this.Plugins.ToList()};
 		}
 	}
 }
