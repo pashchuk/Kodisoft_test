@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace PluginLibrary.Plugins
 {
-	public class StringPlugin : Plugin<string>
+	public class StringPlugin : Plugin<string>, ICloneable
 	{
 		public override string Modify(string param)
 		{
 			return param.ToUpper();
+		}
+
+		public object Clone()
+		{
+			Activator.CreateInstance(this.GetType());
 		}
 	}
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PluginLibrary.Plugins
 {
-	public class CollectionPlugin:Plugin<IEnumerable<object>>
+	public class CollectionPlugin:Plugin<IEnumerable<object>> , ICloneable
 	{
 		public IEnumerable<IPlugin> Plugins { get; set; } 
 		public override IEnumerable<object> Modify(IEnumerable<object> param)
@@ -22,6 +22,11 @@ namespace PluginLibrary.Plugins
 				result.Add(plugin.Modify(paramEnumerator.Current));
 			}
 			return result;
+		}
+
+		public object Clone()
+		{
+			return new CollectionPlugin() {Plugins = this.Plugins};
 		}
 	}
 }

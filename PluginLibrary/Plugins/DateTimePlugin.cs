@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PluginLibrary.Plugins
 {
-	public class DateTimePlugin : Plugin<DateTime>
+	public class DateTimePlugin : Plugin<DateTime> , ICloneable
 	{
 		private int timeZone;
 
@@ -21,6 +21,11 @@ namespace PluginLibrary.Plugins
 			int diff = timeZone - param.Hour - param.ToUniversalTime().Hour;
 			param.AddHours(diff);
 			return param;
+		}
+
+		public object Clone()
+		{
+			return new DateTimePlugin(this.timeZone);
 		}
 	}
 }
