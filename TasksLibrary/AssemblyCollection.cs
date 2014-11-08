@@ -16,7 +16,7 @@ namespace TasksLibrary
 		public AssemblyCollection()
 		{
 			cache = new Dictionary<Type, ConstructorInfo>();
-			var result = Parallel.ForEach(AppDomain.CurrentDomain.GetAssemblies(), assembly =>
+			Parallel.ForEach(AppDomain.CurrentDomain.GetAssemblies(), assembly =>
 			{
 				foreach (var type in assembly.GetTypes())
 				{
