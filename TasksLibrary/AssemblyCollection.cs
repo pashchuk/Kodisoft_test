@@ -38,8 +38,8 @@ namespace TasksLibrary
 		public T Create<T>()
 		{
 			ConstructorInfo ctor;
-			if (!cache.TryGetValue(typeof (T),out ctor))
-				throw new NullReferenceException("type T is not exist in cached types");
+			if (!cache.TryGetValue(typeof (T), out ctor))
+				throw new NullReferenceException(string.Format("Type {0} is not exist in cached types", typeof (T)));
 			lock (_lockObj)
 			{
 				return (T)ctor.Invoke(null);	
