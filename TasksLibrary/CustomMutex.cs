@@ -38,12 +38,9 @@ namespace TasksLibrary
 					_isFree = false;
 					return complete_task;
 				}
-				else
-				{
-					var waiter = new TaskCompletionSource<bool>();
-					waiters.Enqueue(waiter);
-					return waiter.Task;
-				}
+				var waiter = new TaskCompletionSource<bool>();
+				waiters.Enqueue(waiter);
+				return waiter.Task;
 			}
 		}
 		public void Release()
