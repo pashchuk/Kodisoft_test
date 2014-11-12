@@ -163,7 +163,7 @@ namespace TasksLibrary
 			}
 			else
 			{
-				var ctor = field.GetType().GetConstructor(new Type[] {});
+				var ctor = field.GetType().GetConstructor(Type.EmptyTypes);
 				if (ctor == null) throw new NullReferenceException(
 					string.Format("{0} doesn't have a default construtor", field.GetType()));
 				generator.Emit(OpCodes.Newobj, ctor);
