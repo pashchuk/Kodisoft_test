@@ -10,6 +10,7 @@ namespace PluginLibrary.Plugins
 	{
 		private int timeZone;
 
+		private DateTimePlugin() { }
 		public DateTimePlugin(int targetTimeZone)
 		{
 			if (targetTimeZone < -12 && targetTimeZone > 12)

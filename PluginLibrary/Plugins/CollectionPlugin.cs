@@ -8,6 +8,7 @@ namespace PluginLibrary.Plugins
 {
 	public class CollectionPlugin:Plugin<IEnumerable<object>> , ICloneable
 	{
+		public CollectionPlugin() { }
 		public IEnumerable<IPlugin> Plugins { get; set; } 
 		public override IEnumerable<object> Modify(IEnumerable<object> param)
 		{

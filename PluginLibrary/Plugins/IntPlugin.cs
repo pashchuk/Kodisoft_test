@@ -10,6 +10,8 @@ namespace PluginLibrary.Plugins
 	{
 		private int multiplier;
 
+		public IntPlugin() { }
+
 		public IntPlugin(int multiplier)
 		{
 			this.multiplier = multiplier;
