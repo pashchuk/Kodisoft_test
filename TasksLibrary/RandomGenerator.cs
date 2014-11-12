@@ -35,6 +35,7 @@ namespace TasksLibrary
 			return sequence.Count != 0 ? sequence.Dequeue() : localGenerator.Next(_maxValue);
 		}
 
+		public RandomGenerator() { }
 		public RandomGenerator(int maxValue)
 		{
 			sequence = new Queue<int>();
