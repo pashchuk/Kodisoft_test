@@ -19,13 +19,17 @@ namespace TasksLibrary
 		private RandomOrgApiRequest setting;
 
 		public int RandomDigit { get { return getDigit(); }}
-
+		
+		//iterator
 		public IEnumerable<int> GetDigits(int count)
 		{
 			for (int i = 0; i < count; i++)
 				yield return getDigit();
 		}
 
+		//get one digit from cached queue
+		//if size of queue less than 20, make async request to Random.org API to populate queue
+ 		//but if queue is empty that return a random digit using a basic random generator
 		private int getDigit()
 		{
 			if (!_isAvailableApi)
@@ -47,11 +51,13 @@ namespace TasksLibrary
 			DownloadNumbersAsync();
 		}
 
+		//make async request to random.org API and populate local queue
 		private async void DownloadNumbersAsync()
 		{
 			_isDownload = true;
 			await Task.Run(async () =>
 			{
+				//serialize setting
 				var json = JsonConvert.SerializeObject(setting);
 				HttpWebRequest request = WebRequest.CreateHttp(@"https://api.random.org/json-rpc/1/invoke");
 				request.ContentType = "application/json-rpc";
@@ -60,6 +66,7 @@ namespace TasksLibrary
 				{
 					writer.Write(json);
 				}
+				//get response with random sequence
 				HttpWebResponse response = (HttpWebResponse) await request.GetResponseAsync();
 				if (response.StatusCode != HttpStatusCode.OK)
 				{
@@ -70,6 +77,7 @@ namespace TasksLibrary
 				{
 					json = reader.ReadToEnd();
 				}
+				//get array of random numbers
 				dynamic result = JsonConvert.DeserializeObject(json);
 				var returnArray = (JArray) result["result"]["random"]["data"];
 				foreach (var a in returnArray)
@@ -80,6 +88,7 @@ namespace TasksLibrary
 			});
 		}
 
+		//Setting class
 		[JsonObject]
 		internal class RandomOrgApiRequest
 		{
