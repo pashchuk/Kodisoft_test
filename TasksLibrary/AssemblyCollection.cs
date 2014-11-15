@@ -13,15 +13,19 @@ namespace TasksLibrary
 		public AssemblyCollection()
 		{
 			cache = new Dictionary<Type, ConstructorInfo>();
+			//get the default constructors and types in all assemblies 
+			//in AppDomain using multiply threads
 			Parallel.ForEach(AppDomain.CurrentDomain.GetAssemblies(), assembly =>
 			{
 				foreach (var type in assembly.GetTypes())
 				{
+					//get ctor and save it in dictionary
 					var ctor = type.GetConstructor(Type.EmptyTypes);
 					if (ctor != null)
 						cache.Add(type, ctor);
 				}
 			});
+			//add event which will scan every downloaded assembly
 			AppDomain.CurrentDomain.AssemblyLoad += (s, args) =>
 			{
 				foreach (var type in args.LoadedAssembly.GetTypes())
@@ -32,6 +36,8 @@ namespace TasksLibrary
 				}
 			};
 		}
+
+		//create a object of type T using cached ctor
 		public T Create<T>()
 		{
 			ConstructorInfo ctor;
