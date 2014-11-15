@@ -24,15 +24,19 @@ namespace TasksLibrary
 		{
 			return task.ContinueWith(action, TaskScheduler.FromCurrentSynchronizationContext());
 		}
+		public static Task CustomContinueWith<TResult>(this Task<TResult> task, Action<Task<TResult>> action)
+		{
+			return task.ContinueWith(action, TaskScheduler.FromCurrentSynchronizationContext());
+		}
 
 		public static async Task<TResult> CustomContinueWith<TResult>(this Task task, Func<TResult> func)
 		{
 			return await task.ContinueWith(ignored => func(), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public static async Task<TResult> CustomContinueWith<TResult>(this Task task, Func<Task<TResult>> func)
+		public static async Task<Task<TResult>> CustomContinueWith<TResult>(this Task task, Func<Task<TResult>> func)
 		{
-			return await await task.ContinueWith(ignored => func(), TaskScheduler.FromCurrentSynchronizationContext());
+			return await task.ContinueWith(ignored => func(), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
 		public static async Task<TResult> CustomContinueWith<TResult>(this Task task, Func<Task, TResult> func)
@@ -40,9 +44,9 @@ namespace TasksLibrary
 			return await task.ContinueWith(func, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 
-		public static async Task<TResult> CustomContinueWith<TResult>(this Task task, Func<Task, Task<TResult>> func)
+		public static async Task<Task<TResult>> CustomContinueWith<TResult>(this Task task, Func<Task, Task<TResult>> func)
 		{
-			return await await task.ContinueWith(func, TaskScheduler.FromCurrentSynchronizationContext());
+			return await task.ContinueWith(func, TaskScheduler.FromCurrentSynchronizationContext());
 		}
 		public static T DeepClone<T>(this T obj)
 		{
