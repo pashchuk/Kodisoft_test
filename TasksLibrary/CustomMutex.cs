@@ -18,6 +18,10 @@ namespace TasksLibrary
 			releaser = Task.FromResult(new Releaser(this));
 		}
 
+		//this func return Task with releaser result
+		//mutex if free it will return cached releaser
+		//but if not it will return non copleted task with null releaser
+		//Once the task is comleted, this func will create a new releaser for this task
 		public Task<Releaser> LockSection()
 		{
 			var wait = Lock();
@@ -27,6 +31,11 @@ namespace TasksLibrary
 					this, CancellationToken.None,
 					TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default); 
 		}
+
+		
+		//this func return completed task if mutex is free
+		//but if mutex is not available for other threads this func
+		//enqueue queue of waiting threads and return non completed task
 		public Task Lock()
 		{
 			lock (waiters)
@@ -41,6 +50,9 @@ namespace TasksLibrary
 				return waiter.Task;
 			}
 		}
+
+		//this func release a mutex and dequeue first waiting task
+		//and set it as completed
 		public void Release()
 		{
 			TaskCompletionSource<bool> toRelease = null;
@@ -55,6 +67,9 @@ namespace TasksLibrary
 				toRelease.SetResult(true);
 		}
 
+		//Releaser store reference on mutex and when
+		//thread go out of "using" scope, Dispose methode will be call
+		//and release mutex
 		public struct Releaser : IDisposable
 		{
 			private readonly CustomMutex mutex;
