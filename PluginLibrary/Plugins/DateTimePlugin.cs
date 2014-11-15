@@ -15,8 +15,8 @@ namespace PluginLibrary.Plugins
 		}
 		public override DateTime Modify(DateTime param)
 		{
-			int diff = timeZone - param.Hour - param.ToUniversalTime().Hour;
-			param.AddHours(diff);
+			int diff = timeZone - (param.Hour - param.ToUniversalTime().Hour);
+			param = param.AddHours(diff);
 			return param;
 		}
 
