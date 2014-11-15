@@ -1,9 +1,8 @@
-﻿using System;
-using System.CodeDom;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PluginLibrary.Plugins;
+using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PluginLibrary.Plugins;
 using TasksLibrary;
 
 namespace UnitTest
