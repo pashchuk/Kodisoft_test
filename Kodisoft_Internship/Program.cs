@@ -50,36 +50,8 @@ namespace Kodisoft_Internship
 			simpleUsePluginClass.Print();
 			difficultUsePluginClass.Print();
 			verydifficultUsePluginClass.Print();
-			CustomMutex mutex = new CustomMutex();
-			Task[] tasks = new Task[10];
-			for (int i = 0; i < 10; i++)
-			{
-				tasks[i] = Task.Run(async () =>
-				{
-					using (await mutex.LockSection())
-					{
-						Console.WriteLine("Thread : {0:D}", Thread.CurrentThread.ManagedThreadId);
-						for (int j = 0; j < 10; j++)
-							Console.Write("{0:D} ", j);
-						Console.WriteLine();
-					}
-				});
-			}
+
 			#endregion
-			Task.WaitAll(tasks);
-			watch.Start();
-			AssemblyCollection collection = new AssemblyCollection();
-			watch.Stop();
-			Console.WriteLine(watch.Elapsed);
-			try
-			{
-				CustomMutex mut = collection.Create<CustomMutex>();
-				Random generator = collection.Create<Random>();
-				Exception ex = collection.Create<Exception>();
-			}
-			catch (NullReferenceException ex) {
-				Console.WriteLine(ex.Message);
-			}
 			Console.ReadLine();
 		}
 	}
