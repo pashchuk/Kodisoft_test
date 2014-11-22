@@ -2,7 +2,7 @@
 
 namespace PluginLibrary.Plugins
 {
-	public class DateTimePlugin : Plugin<DateTime> , ICloneable
+	public class DateTimePlugin : Plugin<DateTime>
 	{
 		private int timeZone;
 
@@ -18,11 +18,6 @@ namespace PluginLibrary.Plugins
 			int diff = timeZone - (param.Hour - param.ToUniversalTime().Hour);
 			param = param.AddHours(diff);
 			return param;
-		}
-
-		public object Clone()
-		{
-			return this.MemberwiseClone();
 		}
 	}
 }

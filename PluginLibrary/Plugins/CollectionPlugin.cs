@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PluginLibrary.Plugins
 {
-	public class CollectionPlugin:Plugin<IEnumerable<object>> , ICloneable
+	public class CollectionPlugin:Plugin<IEnumerable<object>>
 	{
 		public CollectionPlugin() { }
 		public IEnumerable<IPlugin> Plugins { get; set; } 
@@ -21,11 +21,6 @@ namespace PluginLibrary.Plugins
 				result.Add(plugin.Modify(paramEnumerator.Current));
 			}
 			return result;
-		}
-
-		public object Clone()
-		{
-			return new CollectionPlugin() {Plugins = this.Plugins.ToList()};
 		}
 	}
 }

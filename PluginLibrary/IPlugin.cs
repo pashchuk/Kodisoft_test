@@ -2,7 +2,7 @@
 
 namespace PluginLibrary
 {
-	public interface IPlugin : ICloneable
+	public interface IPlugin
 	{
 		object Modify(object param);
 	}
