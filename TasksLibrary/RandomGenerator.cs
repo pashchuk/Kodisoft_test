@@ -17,20 +17,18 @@ namespace TasksLibrary
 		private readonly Queue<int> sequence;
 		private readonly Random localGenerator;
 		private RandomOrgApiRequest setting;
-
-		public int RandomDigit { get { return getDigit(); }}
 		
 		//iterator
 		public IEnumerable<int> GetDigits(int count)
 		{
 			for (int i = 0; i < count; i++)
-				yield return getDigit();
+				yield return GetOneDigit();
 		}
 
 		//get one digit from cached queue
 		//if size of queue less than 20, make async request to Random.org API to populate queue
  		//but if queue is empty that return a random digit using a basic random generator
-		private int getDigit()
+		public int GetOneDigit()
 		{
 			if (!_isAvailableApi)
 				return localGenerator.Next(_maxValue);

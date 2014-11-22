@@ -181,7 +181,7 @@ namespace WpfTest
 			var random = new RandomGenerator(30);
 			//get 500 random digits
 			for (int i = 0; i < 500; i++)
-				str.Append(random.RandomDigit + " ");
+				str.Append(random.GetOneDigit() + " ");
 			//get 500 random digits using iterator
 			foreach (var dig in random.GetDigits(500))
 				str.Append(dig + " ");
