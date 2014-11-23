@@ -18,7 +18,7 @@ namespace UnitTest
 			RandomGenerator rnd = new RandomGenerator(50);
 
 			//act
-			int rndDigit = rnd.RandomDigit;
+			int rndDigit = rnd.GetOneDigit();
 
 			//assert
 			Assert.IsFalse(rndDigit < 0);

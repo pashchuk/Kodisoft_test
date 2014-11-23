@@ -70,21 +70,6 @@ namespace TasksLibrary
 		//Releaser store reference on mutex and when
 		//thread go out of "using" scope, Dispose methode will be call
 		//and release mutex
-//		public struct Releaser : IDisposable
-//		{
-//			private readonly CustomMutex mutex;
-//
-//			internal Releaser(CustomMutex mutex)
-//			{
-//				this.mutex = mutex;
-//			}
-//			public void Dispose()
-//			{
-//				if(mutex!=null)
-//					mutex.Release();
-//			}
-//		}
-		
 		public class Releaser : IDisposable
 		{
 			private bool _disposed = false;

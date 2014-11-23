@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using TasksLibrary;
 
 namespace WpfTest
@@ -168,7 +169,8 @@ namespace WpfTest
 			foreach (var task in tasks)
 				await task;
 			//print result
-			TextBox.Text += str.ToString();
+			var res = str.ToString();
+			TextBox.Text += res;
 			str.Clear();
 		}
 
@@ -220,13 +222,14 @@ namespace WpfTest
 				result.Append("\r\n");
 			}
 		}
-
+		
 		private void testWithoutMutex(StringBuilder result)
 		{
 			for (int j = 0; j < 20; j++)
 				result.Append(j + " ");
 			result.Append("\r\n");
 		}
+
 		private class TestClass
 		{
 			public int Propery { get; set; }
