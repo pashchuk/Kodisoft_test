@@ -31,8 +31,11 @@ namespace TasksLibrary
 				foreach (var type in args.LoadedAssembly.GetTypes())
 				{
 					var ctor = type.GetConstructor(Type.EmptyTypes);
-					if (ctor != null)
+					if (ctor == null) continue;
+					lock (_lockObj)
+					{
 						cache.Add(type, ctor);
+					}
 				}
 			};
 		}
