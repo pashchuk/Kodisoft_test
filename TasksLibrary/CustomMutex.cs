@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,15 +8,12 @@ namespace TasksLibrary
 {
 	public class CustomMutex
 	{
-		private readonly Task<Releaser> releaser;
-		private static readonly Task complete_task = Task.FromResult(true);
-		private readonly Queue<TaskCompletionSource<bool>> waiters = new Queue<TaskCompletionSource<bool>>();
-		private bool _isFree;
+		private volatile Queue<TaskCompletionSource<bool>> waiters = new Queue<TaskCompletionSource<bool>>();
+		private volatile bool _isFree;
 
 		public CustomMutex()
 		{
 			_isFree = true;
-			releaser = Task.FromResult(new Releaser(this));
 		}
 
 		//this func return Task with releaser result
@@ -25,13 +23,12 @@ namespace TasksLibrary
 		public Task<Releaser> LockSection()
 		{
 			var wait = Lock();
-			return wait.IsCompleted ?
-				releaser :
-				wait.ContinueWith((_, state) => new Releaser((CustomMutex) state),
+			return wait.IsCompleted
+				? Task.FromResult(new Releaser(this))
+				: wait.ContinueWith((_, state) => new Releaser((CustomMutex) state),
 					this, CancellationToken.None,
-					TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default); 
+					TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
 		}
-
 		
 		//this func return completed task if mutex is free
 		//but if mutex is not available for other threads this func
@@ -43,7 +40,7 @@ namespace TasksLibrary
 				if (_isFree)
 				{
 					_isFree = false;
-					return complete_task;
+					return Task.FromResult(true);
 				}
 				var waiter = new TaskCompletionSource<bool>();
 				waiters.Enqueue(waiter);
@@ -62,11 +59,11 @@ namespace TasksLibrary
 					toRelease = waiters.Dequeue();
 				else
 					_isFree = true;
-			}
-			if (toRelease != null)
-				toRelease.SetResult(true);
-		}
 
+				if (toRelease != null)
+					toRelease.SetResult(true);
+			}
+		}
 		//Releaser store reference on mutex and when
 		//thread go out of "using" scope, Dispose methode will be call
 		//and release mutex
@@ -76,12 +73,13 @@ namespace TasksLibrary
 
 			private readonly CustomMutex mutex;
 
-			internal Releaser(CustomMutex mutex)
+			public Releaser(CustomMutex mutex)
 			{
 				this.mutex = mutex;
 			}
 			public void Dispose()
 			{
+//				Debug.WriteLine("Call Dispose");
 				Dispose(true);
 				GC.SuppressFinalize(this);
 			}
@@ -89,7 +87,7 @@ namespace TasksLibrary
 			protected virtual void Dispose(bool disposing)
 			{
 				if (_disposed) return;
-				if(disposing)
+				if (disposing)
 					if (mutex != null)
 						mutex.Release();
 				_disposed = true;
@@ -97,6 +95,7 @@ namespace TasksLibrary
 
 			~Releaser()
 			{
+//				Debug.WriteLine("Call Finalize");
 				Dispose(false);
 			}
 		}
