@@ -31,11 +31,8 @@ namespace TasksLibrary
 				foreach (var type in args.LoadedAssembly.GetTypes())
 				{
 					var ctor = type.GetConstructor(Type.EmptyTypes);
-					if (ctor == null) continue;
-					lock (_lockObj)
-					{
+					if (ctor != null)
 						cache.Add(type, ctor);
-					}
 				}
 			};
 		}
@@ -44,10 +41,10 @@ namespace TasksLibrary
 		public T Create<T>()
 		{
 			ConstructorInfo ctor;
-			if (!cache.TryGetValue(typeof (T), out ctor))
-				throw new NullReferenceException(string.Format("Type {0} is not exist in cached types", typeof (T)));
 			lock (_lockObj)
 			{
+				if (!cache.TryGetValue(typeof (T), out ctor))
+					throw new NullReferenceException(string.Format("Type {0} is not exist in cached types", typeof (T)));
 				return (T)ctor.Invoke(null);	
 			}
 		}
