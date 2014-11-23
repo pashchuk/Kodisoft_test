@@ -8,6 +8,7 @@ namespace TasksLibrary
 {
 	public class CustomMutex
 	{
+		private readonly Task _completed_task = Task.FromResult(true); 
 		private volatile Queue<TaskCompletionSource<bool>> waiters = new Queue<TaskCompletionSource<bool>>();
 		private volatile bool _isFree;
 
@@ -40,7 +41,7 @@ namespace TasksLibrary
 				if (_isFree)
 				{
 					_isFree = false;
-					return Task.FromResult(true);
+					return _completed_task;
 				}
 				var waiter = new TaskCompletionSource<bool>();
 				waiters.Enqueue(waiter);
