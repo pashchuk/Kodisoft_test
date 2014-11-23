@@ -32,7 +32,10 @@ namespace TasksLibrary
 				{
 					var ctor = type.GetConstructor(Type.EmptyTypes);
 					if (ctor != null)
-						cache.Add(type, ctor);
+						lock (_lockObj)
+						{
+							cache.Add(type, ctor);
+						}
 				}
 			};
 		}
