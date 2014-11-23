@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -130,7 +131,14 @@ namespace WpfTest
 				tasks.Add(Task.Factory.StartNew(() => testWithoutMutex(str)));
 			Task.WaitAll(tasks.ToArray());
 			//print result of completed tasks
-			TextBox.Text += str.ToString();
+			try
+			{
+				TextBox.Text += str.ToString();
+			}
+			catch (ArgumentOutOfRangeException ex)
+			{
+				TextBox.Text += "Exception in stringBuilder\r\n";
+			}
 			TextBox.Text += "--------After using mutex--------\r\n";
 			tasks.Clear();
 			str.Clear();
@@ -142,7 +150,14 @@ namespace WpfTest
 			foreach (var task in tasks)
 				await task;
 			//print result
-			TextBox.Text += str.ToString();
+			try
+			{
+				TextBox.Text += str.ToString();
+			}
+			catch (ArgumentOutOfRangeException ex)
+			{
+				TextBox.Text += "Exception in stringBuilder\r\n";
+			}
 			str.Clear();
 		}
 
@@ -157,7 +172,14 @@ namespace WpfTest
 				tasks.Add(Task.Factory.StartNew(() => testWithoutMutex(str)));
 			Task.WaitAll(tasks.ToArray());
 			//print result of completed tasks
-			TextBox.Text += str.ToString();
+			try
+			{
+				TextBox.Text += str.ToString();
+			}
+			catch (ArgumentOutOfRangeException ex)
+			{
+				TextBox.Text += "Exception in stringBuilder\r\n";
+			}
 			TextBox.Text += "--------After using mutex--------\r\n";
 			tasks.Clear();
 			str.Clear();
@@ -169,9 +191,14 @@ namespace WpfTest
 			foreach (var task in tasks)
 				await task;
 			//print result
-			var res = str.ToString();
-			TextBox.Text += res;
-			str.Clear();
+			try
+			{
+				TextBox.Text += str.ToString();
+			}
+			catch (ArgumentOutOfRangeException ex)
+			{
+				TextBox.Text += "Exception in stringBuilder\r\n";
+			}
 		}
 
 		private void TestRandomGenerator()
