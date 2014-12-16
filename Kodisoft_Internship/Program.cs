@@ -62,7 +62,7 @@ namespace Kodisoft_Internship
 		public RandomGenerator generator;
 		public int Asd { get; set; }
 	}
-	public class UsePluginBaseClass : PluginBase<Plugin<int>, int>
+	public class UsePluginBaseClass : PluginBase<Plugin<int>>
 	{
 		public override void Print()
 		{
@@ -70,7 +70,7 @@ namespace Kodisoft_Internship
 		}
 	}
 
-	public class AnotherUsePluginBaseClass : PluginBase<CollectionPlugin, IEnumerable<object>>
+	public class AnotherUsePluginBaseClass : PluginBase<CollectionPlugin>
 	{
 		public override void Print()
 		{
@@ -78,12 +78,12 @@ namespace Kodisoft_Internship
 			Console.WriteLine("Before applying plugin:);");
 			int count = 0;
 			foreach (var plugin in Plugin.Plugins)
-				Console.WriteLine("Plugin name = {0} : data = {1}", plugin.GetType().Name, Data.ElementAt(count++));
+				Console.WriteLine("Plugin name = {0} : data = {1}", plugin.GetType().Name, (Data as IEnumerable<object>).ElementAt(count++));
 			count = 0;
-			Data = Plugin.Modify(Data);
+			Data = Plugin.Modify((Data as IEnumerable<object>));
 			Console.WriteLine("After applying plugin:);");
 			foreach (var plugin in Plugin.Plugins)
-				Console.WriteLine("Plugin name = {0} : data = {1}", plugin.GetType().Name, Data.ElementAt(count++));
+				Console.WriteLine("Plugin name = {0} : data = {1}", plugin.GetType().Name, (Data as IEnumerable<object>).ElementAt(count++));
 			Console.WriteLine("Collection plugin complete");
 		}
 	}
