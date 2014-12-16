@@ -88,9 +88,11 @@ namespace TasksLibrary
 			protected virtual void Dispose(bool disposing)
 			{
 				if (_disposed) return;
-				if (disposing)
-					if (mutex != null)
-						mutex.Release();
+				//disposing is required boolean parameter in guidelines
+				//but in this case is not required
+//				if (disposing)
+				if (mutex != null)
+					mutex.Release();
 				_disposed = true;
 			}
 
