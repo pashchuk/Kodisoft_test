@@ -50,10 +50,10 @@ namespace TasksLibrary
 		}
 
 		//make async request to random.org API and populate local queue
-		private async void DownloadNumbersAsync()
+		private Task DownloadNumbersAsync()
 		{
 			_isDownload = true;
-			await Task.Run(async () =>
+			return Task.Run(async () =>
 			{
 				//serialize setting
 				var json = JsonConvert.SerializeObject(setting);
